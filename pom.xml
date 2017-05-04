@@ -1,0 +1,50 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>indi.pings.commons</groupId>
+  <artifactId>commons-java</artifactId>
+  <version>1.2</version>
+  <name>JavaCommons</name>
+  <description>java常用类（java，android）</description>
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  </properties>
+  <build>
+    <plugins>
+      <plugin>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <configuration>
+          <source>1.7</source>
+          <target>1.7</target>
+        </configuration>
+      </plugin>
+      <plugin>
+        <artifactId>maven-jar-plugin</artifactId>
+      </plugin>
+    </plugins>
+  </build>
+  
+  <dependencies>
+  
+    <!-- android -->
+	<dependency>
+	    <groupId>com.google.android</groupId>
+	    <artifactId>android</artifactId>
+	    <version>4.4.2</version>
+	</dependency>
+  
+    <!-- httpclient -->
+	<dependency>
+	    <groupId>org.apache.httpcomponents</groupId>
+	    <artifactId>httpmime</artifactId>
+	    <version>4.3.5</version>
+	    <exclusions>
+	    	<exclusion>
+	    		<artifactId>httpclient</artifactId>
+	    		<groupId>org.apache.httpcomponents</groupId>
+	    	</exclusion>
+	    </exclusions>
+	</dependency>
+    
+  </dependencies>
+  
+</project>

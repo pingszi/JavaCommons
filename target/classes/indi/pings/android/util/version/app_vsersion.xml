@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>  
+<!-- 版本文件示例 -->
+<info> 
+    <name>jmhxApp.apk</name>  
+    <versionName>2.0</versionName>  
+    <url>http://10.10.155.75:18088/jmhxsys/app/jmhxApp.apk</url>  
+    <updateInfo>优化网络设置</updateInfo>  
+    <desc>检测到最新版本，请及时更新！</desc>  
+</info>  
