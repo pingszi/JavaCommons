@@ -140,7 +140,7 @@ public class ZipUtil {
      ** @desc ：压缩文件                                              
      ** @author Pings                                      
      ** @date   2016年3月29日                                  
-     ** @param dir
+     ** @param file
      ** @param out
      ** @param basedir                                              
      * *******************************************************
