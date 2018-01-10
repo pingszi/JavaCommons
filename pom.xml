@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>indi.pings.commons</groupId>
     <artifactId>commons-java</artifactId>
-    <version>1.2</version>
+    <version>1.01</version>
     <name>JavaCommons</name>
     <description>java常用类（java，android）</description>
 
