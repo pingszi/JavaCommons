@@ -1,5 +1,6 @@
-package indi.pings.commons.util.excel;
+package com.yhsoft.edu.util;
 
+import org.apache.poi.hssf.usermodel.HSSFDateUtil;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -7,10 +8,13 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Function;
+import java.util.stream.IntStream;
+import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 import static java.util.stream.Collectors.*;
 
@@ -33,10 +37,52 @@ public class ExcelUtil {
      ** @return 单个表格数据
      * *******************************************************
      */
-    public static List<String[]> parseSheet(Sheet sheet) {
+    private static List<String[]> parseSheet(Sheet sheet) {
+//        return StreamSupport.stream(sheet.spliterator(), false)
+//                .map(row -> StreamSupport.stream(row.spliterator(), false).map(ExcelUtil::getCellValue).toArray(String[]::new))
+//                .collect(toList());
+
+        int column = sheet.getRow(0).getPhysicalNumberOfCells();
+
         return StreamSupport.stream(sheet.spliterator(), false)
-                .map(row -> StreamSupport.stream(row.spliterator(), false).map(cell -> cell.getStringCellValue()).toArray(String[]::new))
+                .map(row -> Stream.iterate(0, i -> i + 1).limit(column).map(i -> ExcelUtil.getCellValue(row.getCell(i))).toArray(String[]::new))
                 .collect(toList());
+
+    }
+
+    /**
+     *********************************************************
+     ** @desc ： 获取Cell单元格
+     ** @author Pings
+     ** @date   2018/11/21
+     ** @param  cell   单元格
+     ** @return 单元格数据
+     * *******************************************************
+     */
+    private static String getCellValue(Cell cell) {
+        if(cell == null) return "";
+        String rst;
+
+        switch (cell.getCellTypeEnum()){
+            case STRING: rst = cell.getStringCellValue(); break;
+            case NUMERIC: {
+                    if(HSSFDateUtil.isCellDateFormatted(cell)) {
+                        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                        return sdf.format(cell.getDateCellValue());
+                    } else {
+                        cell.setCellType(CellType.STRING);
+                        rst = cell.getStringCellValue();
+                    }
+            } break;
+            case BOOLEAN: rst = String.valueOf(cell.getBooleanCellValue()); break;
+            case FORMULA: rst = String.valueOf(cell.getCellFormula()); break;
+            case BLANK: rst = ""; break;
+            case ERROR: rst = "error"; break;
+
+            default: rst = ""; break;
+        }
+
+        return rst;
     }
 
     /**
@@ -119,7 +165,7 @@ public class ExcelUtil {
      ** @param  dataList 写入的数据
      * *******************************************************
      */
-    public static void writeSheet(Sheet sheet, List<Object[]> dataList) {
+    private static void writeSheet(Sheet sheet, List<Object[]> dataList) {
         //**计数器
         final List<Integer> index = Arrays.asList(-1, -1);
 
